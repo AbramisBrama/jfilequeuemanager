@@ -33,10 +33,31 @@
  */
 package org.bitbucket.ab.jfqm;
 
+
+import static java.nio.file.StandardCopyOption.*;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
 public class FileCopier {
+	
+	public static void copy(String source, String target)
+	{
+		try { //http://stackoverflow.com/questions/5003907/how-to-copy-file-in-java
+			Path pTarget = Files.createDirectories(FileSystems.getDefault().getPath(target), new FileAttribute<?>[0]);
+			java.nio.file.Files.copy(new FileInputStream(source), pTarget, REPLACE_EXISTING); 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
 
 }
