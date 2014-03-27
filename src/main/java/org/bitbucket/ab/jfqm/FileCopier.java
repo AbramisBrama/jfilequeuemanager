@@ -53,7 +53,8 @@ public class FileCopier {
 	{
 		try { //http://stackoverflow.com/questions/5003907/how-to-copy-file-in-java
 			Path pTarget = Files.createDirectories(FileSystems.getDefault().getPath(target), new FileAttribute<?>[0]);
-			java.nio.file.Files.copy(new FileInputStream(source), pTarget, REPLACE_EXISTING); 
+			java.nio.file.Files.move(FileSystems.getDefault().getPath(source), pTarget, REPLACE_EXISTING); 
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
