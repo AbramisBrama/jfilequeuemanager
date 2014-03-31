@@ -30,13 +30,66 @@
 *   вместе с этой программой. Если это не так, см.
 *   <http://www.gnu.org/licenses/>.)
 */
-package org.bitbucket.ab.jfqm;
+package org.bitbucket.ab.jfqm.task;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
-public interface IJobsExecutor {
-	
+public interface ITaskInfo {
+
+	/**
+	 * @return the name
+	 */
+	public abstract String getName();
+
+	/**
+	 * @param name the name to set
+	 */
+	public abstract void setName(String name);
+
+	/**
+	 * @return the from
+	 */
+	public abstract String getFrom();
+
+	/**
+	 * @param from the from to set
+	 */
+	public abstract void setFrom(String from);
+
+	/**
+	 * @return the to
+	 */
+	public abstract String getTo();
+
+	/**
+	 * @param to the to to set
+	 */
+	public abstract void setTo(String to);
+
+	/**
+	 * @return the moveChecked
+	 */
+	public abstract boolean isMoveChecked();
+
+	/**
+	 * @param moveChecked the moveChecked to set
+	 */
+	public abstract void setMoveChecked(boolean moveChecked);
+
+	/**
+	 * @return the timeout
+	 */
+	public abstract long getTimeout();
+
+	/**
+	 * @param timeout the timeout to set
+	 */
+	public abstract void setTimeout(long timeout);
+
+	public abstract long getId();
+
+	public abstract void setId(long id);
 
 }

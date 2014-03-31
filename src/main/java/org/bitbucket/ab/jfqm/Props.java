@@ -37,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob;
-import org.bitbucket.ab.jfqm.task.TaskInfo;
+import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
@@ -84,7 +84,7 @@ public class Props {
 		return dirs;
 	}
 	
-	public TaskInfo getNextJob()
+	public ITaskInfo getNextJob()
 	{ 
 		//TODO - выдать QTaskInfo с ближайшим временем выполнения
 		return null;
