@@ -30,94 +30,63 @@
 *   вместе с этой программой. Если это не так, см.
 *   <http://www.gnu.org/licenses/>.)
 */
-package org.bitbucket.ab.jfqm.task;
+package org.bitbucket.ab.jfqm.test;
+
+import static org.junit.Assert.*;
+
+import org.bitbucket.ab.jfqm.config.IConfigBean;
+import org.bitbucket.ab.jfqm.task.ITaskInfo;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  *
  */
-public class TaskInfo implements ITaskInfo {
+public class TestConfigBean {
+	
+	static IConfigBean config;
+	private static BeanFactory beanfactory;
 
-	public TaskInfo(String name, String from, String to, boolean moveChecked,
-			long timeout, long id) {
-		super();
-		this.name = name;
-		this.from = from;
-		this.to = to;
-		this.moveChecked = moveChecked;
-		this.timeout = timeout;
-		this.id = id;
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		System.out.println("Loading config...");
+        beanfactory = new ClassPathXmlApplicationContext("test-config.xml");
+        System.out.println("Bean factory created...");
+        config = (IConfigBean) beanfactory.getBean("tasklist");
+        System.out.println("Got it...");
 	}
-	public TaskInfo(String name, String from, String to, long timeout) {
-		super();
-		this.name = name;
-		this.from = from;
-		this.to = to;
-		this.timeout = timeout;
-		this.id = new String(name+from+to+moveChecked+timeout).hashCode();
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 	}
-	public TaskInfo(String name, String from, String to) {
-		super();
-		this.name = name;
-		this.from = from;
-		this.to = to;
-		this.timeout = 1000*60*30; //default timeout - 30 min
-		this.id = new String(name+from+to+moveChecked+timeout).hashCode();
+
+	/**
+	 * Test method for {@link org.bitbucket.ab.jfqm.config.ConfigBean#getTasks()}.
+	 */
+	@Test
+	public void testGetTasks() {
+		ITaskInfo task = config.getTasks().get(0);
+		System.out.println(task.getFrom());
+		assertTrue(task.getName().equals("task1"));
 	}
-	private String name;
-	private String from;
-	private String to;
-	private boolean moveChecked = true;
-	private long timeout;
-	private long id;
-	
-	public String getName() {
-		return name;
+
+	/**
+	 * Test method for {@link org.bitbucket.ab.jfqm.config.ConfigBean#setTasks(java.util.List)}.
+	 */
+	@Test
+	public void testSetTasks() {
+		fail("Not yet implemented");
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getFrom() {
-		return from;
-	}
-	public TaskInfo(String name, String from, String to, boolean moveChecked,
-			long timeout) {
-		super();
-		this.name = name;
-		this.from = from;
-		this.to = to;
-		this.moveChecked = moveChecked;
-		this.timeout = timeout;
-		this.id = new String(name+from+to+moveChecked+timeout).hashCode();
-	}
-	public void setFrom(String from) {
-		this.from = from;
-	}
-	public String getTo() {
-		return to;
-	}
-	public void setTo(String to) {
-		this.to = to;
-	}
-	public boolean isMoveChecked() {
-		return moveChecked;
-	}
-	public void setMoveChecked(boolean moveChecked) {
-		this.moveChecked = moveChecked;
-	}
-	public long getTimeout() {
-		return timeout;
-	}
-	public void setTimeout(long timeout) {
-		this.timeout = timeout;
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	
 
 }

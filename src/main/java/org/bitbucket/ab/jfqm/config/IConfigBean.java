@@ -43,4 +43,5 @@ import org.bitbucket.ab.jfqm.task.ITaskInfo;
  */
 public interface IConfigBean {
 	List<ITaskInfo> getTasks();
+	void setTasks(List<ITaskInfo> tasks);
 }

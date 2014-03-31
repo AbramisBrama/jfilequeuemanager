@@ -35,6 +35,7 @@ package org.bitbucket.ab.jfqm.config;
 import java.util.List;
 
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
@@ -48,10 +49,16 @@ public class ConfigBean implements IConfigBean {
 	/* (non-Javadoc)
 	 * @see org.bitbucket.ab.jfqm.config.IConfigBean#getTasks()
 	 */
-	@Override
+	@Autowired
 	public List<ITaskInfo> getTasks() {
 		// TODO Auto-generated method stub
 		return tasks;
+	}
+	
+	@Autowired
+	public void setTasks(List<ITaskInfo> tasks) {
+		// TODO Auto-generated method stub
+		this.tasks = tasks;;
 	}
 
 }
