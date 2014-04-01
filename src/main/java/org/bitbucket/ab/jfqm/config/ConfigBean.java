@@ -36,9 +36,7 @@ import java.util.List;
 
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.Scope;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.SimpleThreadScope;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
@@ -62,7 +60,7 @@ public class ConfigBean implements IConfigBean {
 	@Autowired
 	public void setTasks(List<ITaskInfo> tasks) {
 		// TODO Auto-generated method stub
-		this.tasks = tasks;;
+		this.tasks = tasks;
 	}
 
 	
@@ -75,10 +73,12 @@ public class ConfigBean implements IConfigBean {
 	{
 		if(config == null) {
 			ClassPathXmlApplicationContext beanFactory = new ClassPathXmlApplicationContext("config.xml");
-			config = (IConfigBean) beanFactory.getBean("tasklist");
+			config = (IConfigBean) beanFactory.getBean("configTaskList");
 		}
 		return config; 
 	}
+
+
 	
 
 }

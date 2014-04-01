@@ -33,8 +33,10 @@
 package org.bitbucket.ab.jfqm.scheduler.impl;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import org.bitbucket.ab.jfqm.scheduler.AbstractJob;
+import org.bitbucket.ab.jfqm.scheduler.AbstractTimeoutJob;
 import org.bitbucket.ab.jfqm.scheduler.IJob;
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
@@ -42,25 +44,29 @@ import org.bitbucket.ab.jfqm.task.ITaskInfo;
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
-public class ResourceCheckJob extends AbstractJob {
+public class ResourceCheckJob extends AbstractTimeoutJob {
 
 	public ResourceCheckJob(ITaskInfo currTaskInfo) {
 		super();
-		this.currTaskInfo = currTaskInfo;
+		this.setTaskInfo(currTaskInfo);
+		Date now = new Date();
+		this.setNextRunTime(new Timestamp(now.getTime()+currTaskInfo.getTimeout()));
 	}
 
-	private ITaskInfo currTaskInfo;
-
-	public Timestamp getNextRuntime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	private IJobQueue jobQueue;
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		
+		while(true)
+		{
+			
+		}
+		
 	}
-	
-	
+
+
+
 }

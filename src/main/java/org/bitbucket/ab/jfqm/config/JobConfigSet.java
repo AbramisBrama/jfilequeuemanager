@@ -30,17 +30,28 @@
 *   вместе с этой программой. Если это не так, см.
 *   <http://www.gnu.org/licenses/>.)
 */
-package org.bitbucket.ab.jfqm.scheduler;
+package org.bitbucket.ab.jfqm.config;
 
-import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
 
+import org.bitbucket.ab.jfqm.scheduler.ITimeoutJob;
+import org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob;
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
-public interface IJob extends Runnable{
-	ITaskInfo getTaskInfo();
-	void setTaskInfo(ITaskInfo t);
+
+public class JobConfigSet extends TreeSet<ITimeoutJob> {
+	  public JobConfigSet(Comparator<? super ITimeoutJob> cmp, List<? extends ITaskInfo> l) {
+		    super(cmp);
+		    for (ITaskInfo item : l) {
+		    	add(new ResourceCheckJob(item));
+		    	//System.out.println(item.getFrom());
+		    }
+		  }
 }

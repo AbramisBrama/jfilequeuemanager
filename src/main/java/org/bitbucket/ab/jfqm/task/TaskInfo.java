@@ -40,7 +40,7 @@ package org.bitbucket.ab.jfqm.task;
 public class TaskInfo implements ITaskInfo {
 
 	public TaskInfo(String name, String from, String to, boolean moveChecked,
-			long timeout, long id) {
+			long timeout, int id) {
 		super();
 		this.name = name;
 		this.from = from;
@@ -70,7 +70,7 @@ public class TaskInfo implements ITaskInfo {
 	private String to;
 	private boolean moveChecked = true;
 	private long timeout;
-	private long id;
+	private int id;
 	
 	public String getName() {
 		return name;
@@ -112,12 +112,13 @@ public class TaskInfo implements ITaskInfo {
 	public void setTimeout(long timeout) {
 		this.timeout = timeout;
 	}
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
+
 	
 
 }

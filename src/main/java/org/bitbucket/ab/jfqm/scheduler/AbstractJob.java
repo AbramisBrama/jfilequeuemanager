@@ -34,26 +34,25 @@ package org.bitbucket.ab.jfqm.scheduler;
 
 import java.sql.Timestamp;
 
+import org.bitbucket.ab.jfqm.task.ITaskInfo;
+
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
 public abstract class AbstractJob implements IJob {
 
-	/* (non-Javadoc)
-	 * @see org.bitbucket.ab.jfqm.JobInterface#run()
-	 */
 	abstract public void run();
 
-	
-	public Timestamp getNextRunTime() {
-		return nextRunTime;
+	private ITaskInfo tasks;
+
+	public ITaskInfo getTaskInfo() {
+		return tasks;
 	}
 
-	public void setNextRunTime(Timestamp nextRunTime) {
-		this.nextRunTime = nextRunTime;
+	public void setTaskInfo(ITaskInfo t) {
+		this.tasks = t;
+		
 	}
-
-	private Timestamp nextRunTime; //initialized value = curr time + timeout
-	
+ 
 }

@@ -34,13 +34,12 @@ package org.bitbucket.ab.jfqm.scheduler;
 
 import java.sql.Timestamp;
 
-import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
-public interface IJob extends Runnable{
-	ITaskInfo getTaskInfo();
-	void setTaskInfo(ITaskInfo t);
+public interface ITimeoutJob extends IJob, Comparable<ITimeoutJob> {
+	Timestamp getNextRunTime();
+	void setNextRunTime(Timestamp t);
 }

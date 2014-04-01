@@ -74,7 +74,11 @@ public class TestConfigBean {
 	@Test
 	public void testGetTasks() {
 		ITaskInfo task = config.getTasks().get(0);
-		System.out.println(task.getName());
+		/*System.out.println(task.getId());
+		task = config.getTasks().get(1);
+		System.out.println(task.getId());
+		task = config.getTasks().get(2);
+		System.out.println(task.getId());*/
 		assertTrue(task.getName().equals("test1"));
 	}
 

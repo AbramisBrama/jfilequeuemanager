@@ -37,10 +37,32 @@ import java.sql.Timestamp;
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
 /**
+/**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
+ *
  */
-public interface IJob extends Runnable{
-	ITaskInfo getTaskInfo();
-	void setTaskInfo(ITaskInfo t);
+public abstract class AbstractTimeoutJob extends AbstractJob implements ITimeoutJob {
+
+	private Timestamp nextRunTime;
+
+	abstract public void run();
+	
+	public int compareTo(ITimeoutJob o) {
+		int rez = this.nextRunTime.compareTo(o.getNextRunTime());
+		if(rez == 0) rez = (int) (this.getTaskInfo().getId()-o.getTaskInfo().getId());
+		return rez;
+	}
+
+	public Timestamp getNextRunTime() {
+		return nextRunTime;
+	}
+
+	public void setNextRunTime(Timestamp t) {
+		this.nextRunTime = t;
+		
+	}
+
+	
+
 }

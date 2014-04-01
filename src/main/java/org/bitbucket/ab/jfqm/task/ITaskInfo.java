@@ -32,6 +32,8 @@
 */
 package org.bitbucket.ab.jfqm.task;
 
+import org.bitbucket.ab.jfqm.config.IConfigBean;
+
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
@@ -88,8 +90,8 @@ public interface ITaskInfo {
 	 */
 	public abstract void setTimeout(long timeout);
 
-	public abstract long getId();
+	public abstract int getId();
 
-	public abstract void setId(long id);
+	public abstract void setId(int id);
 
 }

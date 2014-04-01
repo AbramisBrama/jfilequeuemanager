@@ -30,17 +30,44 @@
 *   вместе с этой программой. Если это не так, см.
 *   <http://www.gnu.org/licenses/>.)
 */
-package org.bitbucket.ab.jfqm.scheduler;
+package org.bitbucket.ab.jfqm.test;
 
-import java.sql.Timestamp;
+import static org.junit.Assert.*;
 
-import org.bitbucket.ab.jfqm.task.ITaskInfo;
+import org.bitbucket.ab.jfqm.config.IConfigBean;
+import org.bitbucket.ab.jfqm.config.JobConfigSet;
+import org.bitbucket.ab.jfqm.scheduler.ITimeoutJob;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
+ *
  */
-public interface IJob extends Runnable{
-	ITaskInfo getTaskInfo();
-	void setTaskInfo(ITaskInfo t);
+public class TestJobConfigSet {
+
+	private static JobConfigSet jobs;
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ClassPathXmlApplicationContext beanFactory = new ClassPathXmlApplicationContext("config.xml");
+		jobs = (JobConfigSet) beanFactory.getBean("jobsSet");
+		
+	}
+
+	@Test
+	public void test() {
+		for(ITimeoutJob i : jobs)
+		{
+			assertNotNull(i);
+		}
+		
+	}
+
 }
