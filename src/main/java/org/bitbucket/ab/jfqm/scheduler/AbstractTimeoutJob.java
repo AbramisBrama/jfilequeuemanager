@@ -37,10 +37,8 @@ import java.sql.Timestamp;
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
 /**
-/**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
- *
  */
 public abstract class AbstractTimeoutJob extends AbstractJob implements ITimeoutJob {
 

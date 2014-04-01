@@ -51,7 +51,6 @@ public class JobConfigSet extends TreeSet<ITimeoutJob> {
 		    super(cmp);
 		    for (ITaskInfo item : l) {
 		    	add(new ResourceCheckJob(item));
-		    	//System.out.println(item.getFrom());
 		    }
 		  }
 }

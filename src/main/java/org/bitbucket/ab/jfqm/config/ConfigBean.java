@@ -48,9 +48,7 @@ public class ConfigBean implements IConfigBean {
 	List<ITaskInfo> tasks;
 	private static IConfigBean config = null;
 	
-	/* (non-Javadoc)
-	 * @see org.bitbucket.ab.jfqm.config.IConfigBean#getTasks()
-	 */
+
 	@Autowired
 	public List<ITaskInfo> getTasks() {
 		// TODO Auto-generated method stub
