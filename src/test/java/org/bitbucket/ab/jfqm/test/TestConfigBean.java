@@ -34,6 +34,7 @@ package org.bitbucket.ab.jfqm.test;
 
 import static org.junit.Assert.*;
 
+import org.bitbucket.ab.jfqm.config.ConfigBean;
 import org.bitbucket.ab.jfqm.config.IConfigBean;
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 import org.junit.AfterClass;
@@ -57,11 +58,7 @@ public class TestConfigBean {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-//		System.out.println("Loading config...");
-        beanfactory = new ClassPathXmlApplicationContext("test-config.xml");
-//        System.out.println("Bean factory created...");
-        config = (IConfigBean) beanfactory.getBean("tasklist");
-//        System.out.println("Got it...");
+		config = ConfigBean.getInstance();
 	}
 
 	/**
@@ -77,7 +74,7 @@ public class TestConfigBean {
 	@Test
 	public void testGetTasks() {
 		ITaskInfo task = config.getTasks().get(0);
-		//System.out.println(task.getName());
+		System.out.println(task.getName());
 		assertTrue(task.getName().equals("test1"));
 	}
 
