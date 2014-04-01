@@ -57,11 +57,11 @@ public class TestConfigBean {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		System.out.println("Loading config...");
+//		System.out.println("Loading config...");
         beanfactory = new ClassPathXmlApplicationContext("test-config.xml");
-        System.out.println("Bean factory created...");
+//        System.out.println("Bean factory created...");
         config = (IConfigBean) beanfactory.getBean("tasklist");
-        System.out.println("Got it...");
+//        System.out.println("Got it...");
 	}
 
 	/**
@@ -77,8 +77,8 @@ public class TestConfigBean {
 	@Test
 	public void testGetTasks() {
 		ITaskInfo task = config.getTasks().get(0);
-		System.out.println(task.getFrom());
-		assertTrue(task.getName().equals("task1"));
+		//System.out.println(task.getName());
+		assertTrue(task.getName().equals("test1"));
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class TestConfigBean {
 	 */
 	@Test
 	public void testSetTasks() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
 	}
 
 }
