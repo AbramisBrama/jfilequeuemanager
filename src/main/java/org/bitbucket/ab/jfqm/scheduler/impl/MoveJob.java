@@ -32,38 +32,27 @@
 */
 package org.bitbucket.ab.jfqm.scheduler.impl;
 
-import java.io.FileNotFoundException;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.concurrent.BlockingQueue;
-
-import org.bitbucket.ab.jfqm.DirChecker;
-import org.bitbucket.ab.jfqm.scheduler.AbstractTimeoutJob;
+import org.bitbucket.ab.jfqm.scheduler.AbstractJob;
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
+ *
  */
-public class ResourceCheckJob extends AbstractTimeoutJob {
+public class MoveJob extends AbstractJob {
 
-	public ResourceCheckJob(ITaskInfo currTaskInfo) {
-		super();
-		this.setTaskInfo(currTaskInfo);
-		Date now = new Date();
-		this.setNextRunTime(new Timestamp(now.getTime()+currTaskInfo.getTimeout()));
+	public MoveJob(ITaskInfo taskInfo) {
+		// TODO Auto-generated constructor stub
 	}
 
+	/* (non-Javadoc)
+	 * @see org.bitbucket.ab.jfqm.scheduler.AbstractJob#run()
+	 */
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-	
-	//private IJobQueue jobQueue;
-	
-
-
 
 }

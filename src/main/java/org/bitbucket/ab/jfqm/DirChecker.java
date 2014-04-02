@@ -32,18 +32,47 @@
 */
 package org.bitbucket.ab.jfqm;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
 public class DirChecker {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static boolean isEmpty(String path) throws FileNotFoundException{
+		File file = new File(path);		 
+		if(file.isDirectory()){
+			if(file.list().length>0){
+				return false; 
+			}else{	 
+				return true;	 
+			} 
+		}else{	 
+			throw( new FileNotFoundException()); 
+		}
 	}
-
+	
+	public List getFiles (String path) throws FileNotFoundException
+	{
+		File file = new File(path);		
+		if(file.isDirectory()){
+			if(file.list().length>0){
+				LinkedList rez = new LinkedList();
+				for(File f: file.listFiles())
+				{
+					if(f.isFile()) rez.add(f);
+				}
+				return rez; 
+			}else{	 
+				return null;	 
+			} 
+		}else{	 
+			throw( new FileNotFoundException()); 
+		}
+	}
+	
 }

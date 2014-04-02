@@ -23,6 +23,7 @@
             <ref bean="test1"/>
             <ref bean="test2"/>
             <ref bean="test3"/>
+	    <ref bean="test60"/>
         </list>
     </constructor-arg>
     </bean>
@@ -44,4 +45,11 @@
         <constructor-arg value="/home/saver/test/test3/out/"/>
         <constructor-arg value="7000"/>
     </bean>    
+    <bean id="test60" class="org.bitbucket.ab.jfqm.task.TaskInfo">
+        <constructor-arg value="test60"/>
+        <constructor-arg value="/home/saver/test/test60/in/"/>
+        <constructor-arg value="/home/saver/test/test60/out/"/>
+        <constructor-arg value="60000"/>
+    </bean>
+
 </beans>

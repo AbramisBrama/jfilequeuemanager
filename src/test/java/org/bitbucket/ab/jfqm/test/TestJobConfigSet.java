@@ -66,6 +66,7 @@ public class TestJobConfigSet {
 		for(ITimeoutJob i : jobs)
 		{
 			assertNotNull(i);
+			//System.out.println(i.getNextRunTime());
 		}
 		
 	}
