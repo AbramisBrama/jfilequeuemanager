@@ -30,6 +30,7 @@
 *   вместе с этой программой. Если это не так, см.
 *   <http://www.gnu.org/licenses/>.)
 */
+
 package org.bitbucket.ab.jfqm.scheduler.impl;
 
 import java.io.FileNotFoundException;

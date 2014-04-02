@@ -52,7 +52,7 @@ public class DirChecker {
 				return true;	 
 			} 
 		}else{	 
-			throw( new FileNotFoundException()); 
+			throw( new FileNotFoundException(file.getAbsolutePath())); 
 		}
 	}
 	

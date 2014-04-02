@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean id="configTaskList" class="org.bitbucket.ab.jfqm.config.ConfigBean">
+        <property name="tasks">
+		<ref bean="taskList"/>
+	</property>
+    </bean>
+
+    <bean id="jobsSet" class="org.bitbucket.ab.jfqm.config.JobConfigSet">
+  	<constructor-arg index="0">
+    	<bean class="org.bitbucket.ab.jfqm.scheduler.impl.TimeoutJobComparator" />
+  	</constructor-arg>
+  	<constructor-arg index="1">
+  		<ref bean="taskList"/>
+	</constructor-arg>
+    </bean> 
+
+    <bean id="taskList" class="java.util.LinkedList">
+    <constructor-arg>
+        <list>
+            <ref bean="test1"/>
+            <ref bean="test2"/>
+            <ref bean="test3"/>
+	    <ref bean="test60"/>
+        </list>
+    </constructor-arg>
+    </bean>
+    <bean id="test1" class="org.bitbucket.ab.jfqm.task.TaskInfo">
+        <constructor-arg value="test1"/>
+	<constructor-arg value="/home/saver/test/test1/in/"/>
+	<constructor-arg value="/home/saver/test/test1/out/"/>
+	<constructor-arg value="5000"/>
+    </bean>
+    <bean id="test2" class="org.bitbucket.ab.jfqm.task.TaskInfo">
+        <constructor-arg value="test2"/>
+        <constructor-arg value="/home/saver/test/test2/in/"/>
+        <constructor-arg value="/home/saver/test/test2/out/"/>
+        <constructor-arg value="7000"/>
+    </bean>    
+    <bean id="test3" class="org.bitbucket.ab.jfqm.task.TaskInfo">
+        <constructor-arg value="test3"/>
+        <constructor-arg value="/home/saver/test/test3/in/"/>
+        <constructor-arg value="/home/saver/test/test3/out/"/>
+        <constructor-arg value="8000"/>
+    </bean>    
+    <bean id="test60" class="org.bitbucket.ab.jfqm.task.TaskInfo">
+        <constructor-arg value="test60"/>
+        <constructor-arg value="/home/saver/test/test60/in/"/>
+        <constructor-arg value="/home/saver/test/test60/out/"/>
+        <constructor-arg value="6000"/>
+    </bean>
+
+</beans>
