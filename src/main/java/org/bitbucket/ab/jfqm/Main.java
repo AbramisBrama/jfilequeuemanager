@@ -8,6 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bitbucket.ab.jfqm.config.JobConfigSet;
 import org.bitbucket.ab.jfqm.scheduler.MoveJobProducer;
+import org.bitbucket.ab.jfqm.scheduler.impl.MoveJob;
 import org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,14 +18,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Main {
 
+	private static ClassPathXmlApplicationContext beanFactory;
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext beanFactory = new ClassPathXmlApplicationContext("config.xml");
+		beanFactory = new ClassPathXmlApplicationContext("config.xml");
 		JobConfigSet jobs = (JobConfigSet) beanFactory.getBean("jobsSet");
-		BlockingQueue b = new LinkedBlockingQueue();
+		BlockingQueue<MoveJob> b = new LinkedBlockingQueue<MoveJob>();
 		MoveJobProducer m = new MoveJobProducer(b, jobs );
+		
 		//ResourceCheckJob first = (ResourceCheckJob) jobs.pollFirst();
 		/*
 		long delta = System.currentTimeMillis()-first.getNextRunTime().getTime();

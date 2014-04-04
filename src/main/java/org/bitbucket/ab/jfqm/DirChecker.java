@@ -56,12 +56,12 @@ public class DirChecker {
 		}
 	}
 	
-	public List getFiles (String path) throws FileNotFoundException
+	public List<File> getFiles (String path) throws FileNotFoundException
 	{
 		File file = new File(path);		
 		if(file.isDirectory()){
 			if(file.list().length>0){
-				LinkedList rez = new LinkedList();
+				LinkedList<File> rez = new LinkedList<File>();
 				for(File f: file.listFiles())
 				{
 					if(f.isFile()) rez.add(f);

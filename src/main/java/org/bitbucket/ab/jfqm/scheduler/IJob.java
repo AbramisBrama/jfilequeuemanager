@@ -32,8 +32,6 @@
 */
 package org.bitbucket.ab.jfqm.scheduler;
 
-import java.sql.Timestamp;
-
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
 /**

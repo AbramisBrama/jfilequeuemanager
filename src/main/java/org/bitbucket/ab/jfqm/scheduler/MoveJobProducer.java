@@ -1,13 +1,3 @@
-package org.bitbucket.ab.jfqm.scheduler;
-import java.io.FileNotFoundException;
-import java.sql.Timestamp;
-import java.util.concurrent.BlockingQueue;
-
-import org.bitbucket.ab.jfqm.DirChecker;
-import org.bitbucket.ab.jfqm.config.JobConfigSet;
-import org.bitbucket.ab.jfqm.scheduler.impl.MoveJob;
-import org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob;
-
 /**
  *   This file is part of JFileQueueManager.
  *   JFileQueueManager is free software: you can redistribute it and/or modify
@@ -41,72 +31,68 @@ import org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob;
  *   <http://www.gnu.org/licenses/>.)
  */
 
+package org.bitbucket.ab.jfqm.scheduler;
+
+import java.io.FileNotFoundException;
+import java.sql.Timestamp;
+import java.util.concurrent.BlockingQueue;
+
+import org.bitbucket.ab.jfqm.DirChecker;
+import org.bitbucket.ab.jfqm.config.JobConfigSet;
+import org.bitbucket.ab.jfqm.scheduler.impl.MoveJob;
+
+
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
- *
+ * 
  */
 public class MoveJobProducer implements Runnable {
 
 	private BlockingQueue<MoveJob> jobQueue;
 	private JobConfigSet checkJobs;
-	
+
 	@Override
 	public void run() {
-		ResourceCheckJob first = (ResourceCheckJob) checkJobs.first();
-		long delta;
-		while(!Thread.interrupted())
-		{
-			delta = System.currentTimeMillis()-first.getNextRunTime().getTime();
-			//System.out.println(first.getNextRunTime()+" "+first.getTaskInfo().getFrom()+" "+delta );
-			try {
-				
-				while(delta>=0)
-				{
-					//checkJobs.remove(first);
-					if(!DirChecker.isEmpty(first.getTaskInfo().getFrom()))
-					{
-			//			System.out.println("Adding job: "+first.getTaskInfo().getFrom());
+		ITimeoutJob first = checkJobs.pollFirst();
+	
+		long currTime = System.currentTimeMillis();			//to avoid frequent reading of System.currentTimeMillis()
+		long delta=currTime - first.getNextRunTime().getTime(); // time before nearest job
+		while (!Thread.interrupted()) {
+			while (delta>=-500) { 							// if less than 500 ms before job beginning
+				try {
+					if (!DirChecker.isEmpty(first.getTaskInfo().getFrom())) {
 						jobQueue.put(new MoveJob(first.getTaskInfo()));
-			//			System.out.println("Job added: "+first.getTaskInfo().getFrom());
+					} else {
+						System.err.println("Dir empty: "+ first.getTaskInfo().getFrom()); // TODO Write to log
 					}
-					else
-					{
-						System.out.println("Dir empty: "+first.getTaskInfo().getFrom());
-					}
-					first.setNextRunTime(new Timestamp(System.currentTimeMillis()+first.getTaskInfo().getTimeout()));
-					checkJobs.add(first);
-					first = (ResourceCheckJob) checkJobs.pollFirst();
-					//delta = System.currentTimeMillis()-first.getNextRunTime().getTime();
-				}
-				Thread.sleep(-delta);
-				
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			//	System.err.println("File error: "+ e.getMessage());
-				delta = 2000; //we need to go on
-				
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			finally
-			{
-				if(delta>0)
-				{
-					first.setNextRunTime(new Timestamp(System.currentTimeMillis()+first.getTaskInfo().getTimeout()));
-					checkJobs.add(first);
-					first = (ResourceCheckJob) checkJobs.pollFirst();
-					delta = System.currentTimeMillis()-first.getNextRunTime().getTime();
+				} catch (FileNotFoundException e) {
+					System.err.println("File error: "+ e.getMessage()); // TODO Write to log
+				} catch (InterruptedException e) {
+					e.printStackTrace();	// TODO Write to log
+				} finally {
+						first.setNextRunTime(new Timestamp(currTime + first.getTaskInfo().getTimeout()));  //we have already checked first item, so let's refresh its next time to run
+						checkJobs.add(first);				
+						first = checkJobs.pollFirst();
+						delta = currTime - first.getNextRunTime().getTime();
 				}
 			}
 			
+			try { //TODO I don't like it
+					Thread.sleep(-delta);
+					delta = System.currentTimeMillis()
+							- first.getNextRunTime().getTime();
+			} catch (InterruptedException e) {
+				e.printStackTrace();	 //TODO Write to log
+			}
+			currTime=System.currentTimeMillis();	
+
 		}
-		
+
 	}
 
-	public MoveJobProducer(BlockingQueue<MoveJob> jobQueue, JobConfigSet checkJobs) {
+	public MoveJobProducer(BlockingQueue<MoveJob> jobQueue,
+			JobConfigSet checkJobs) {
 		super();
 		this.jobQueue = jobQueue;
 		this.checkJobs = checkJobs;
