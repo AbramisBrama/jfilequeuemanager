@@ -46,7 +46,7 @@ import org.bitbucket.ab.jfqm.task.ITaskInfo;
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
 
-public class JobConfigSet extends TreeSet<ITimeoutJob> {
+public class JobConfigSet extends TreeSet<ITimeoutJob> { // TODO change to ConcurrentSkipListSet, do not extend
 	  public JobConfigSet(Comparator<? super ITimeoutJob> cmp, List<? extends ITaskInfo> l) {
 		    super(cmp);
 		    for (ITaskInfo item : l) {

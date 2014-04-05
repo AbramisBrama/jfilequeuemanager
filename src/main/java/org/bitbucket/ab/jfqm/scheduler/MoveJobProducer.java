@@ -58,10 +58,16 @@ public class MoveJobProducer implements Runnable {
 	
 		long currTime = System.currentTimeMillis();			//to avoid frequent reading of System.currentTimeMillis()
 		long delta=currTime - first.getNextRunTime().getTime(); // time before nearest job
+		
 		while (!Thread.interrupted()) {
+			ITimeoutJob nearestJob = checkJobs.pollFirst();
+			if ( isTimeToRun(nearestJob) ){
+				
+			}
+			isTimeToRun(
 			while (delta>=-500) { 							// if less than 500 ms before job beginning
 				try {
-					if (!DirChecker.isEmpty(first.getTaskInfo().getFrom())) {
+					if (!DirChecker.isEmpty(first.getTaskInfo().getFrom())) { // the longest operation TODO put it to new thread
 						jobQueue.put(new MoveJob(first.getTaskInfo()));
 					} else {
 						System.err.println("Dir empty: "+ first.getTaskInfo().getFrom()); // TODO Write to log
@@ -71,8 +77,8 @@ public class MoveJobProducer implements Runnable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();	// TODO Write to log
 				} finally {
-						first.setNextRunTime(new Timestamp(currTime + first.getTaskInfo().getTimeout()));  //we have already checked first item, so let's refresh its next time to run
-						checkJobs.add(first);				
+						first.setNextRunTime(new Timestamp(currTime + first.getTaskInfo().getTimeout()));  //we have already checked first item, so let's refresh its next time to run TODO - bring it to job
+						checkJobs.add(first);	// TODO add after job is done			
 						first = checkJobs.pollFirst();
 						delta = currTime - first.getNextRunTime().getTime();
 				}
@@ -96,5 +102,9 @@ public class MoveJobProducer implements Runnable {
 		super();
 		this.jobQueue = jobQueue;
 		this.checkJobs = checkJobs;
+	}
+	
+	private boolean isTimeToRun(ITimeoutJob job){
+		return (System.currentTimeMillis()- job.getNextRunTime().getTime() ) >=-500;
 	}
 }
