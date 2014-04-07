@@ -51,7 +51,7 @@ import org.bitbucket.ab.jfqm.task.ITaskInfo;
  */
 public class ResourceCheckJob extends AbstractTimeoutJob {
 
-	static final Logger logger =Logger.getLogger(AbstractTimeoutJob.class);
+	static final Logger logger = Logger.getLogger(AbstractTimeoutJob.class);
 	
 	private BlockingQueue<MoveJob> jobQueue;
 
@@ -61,20 +61,34 @@ public class ResourceCheckJob extends AbstractTimeoutJob {
 		Date now = new Date();
 		this.setNextRunTime(new Timestamp(now.getTime()+currTaskInfo.getTimeout()));
 	}
+	
+	public ResourceCheckJob(ITaskInfo currTaskInfo, BlockingQueue<MoveJob> jobQueue) {
+		super();
+		this.setTaskInfo(currTaskInfo);
+		this.setJobQueue(jobQueue);
+		Date now = new Date();
+		this.setNextRunTime(new Timestamp(now.getTime()+currTaskInfo.getTimeout()));
+	}
+
+	public BlockingQueue<MoveJob> getJobQueue() {
+		return jobQueue;
+	}
+
+	public void setJobQueue(BlockingQueue<MoveJob> jobQueue) {
+		this.jobQueue = jobQueue;
+	}
 
 	@Override
 	public void run() {
 
-		
 		try {
 			if (!DirChecker.isEmpty(getTaskInfo().getFrom())) { // the longest operation TODO put it to new thread
 				jobQueue.put(new MoveJob(getTaskInfo()));
 			} else {
-				System.err.println("Dir empty: "+ getTaskInfo().getFrom()); // TODO Write to log
+				logger.error("Dir empty: "+ getTaskInfo().getFrom()); 
 			}
 		} catch (FileNotFoundException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Not found: "+ getTaskInfo().getFrom());
 		}
 		
 	}

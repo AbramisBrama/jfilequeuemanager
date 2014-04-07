@@ -52,9 +52,11 @@ public abstract class AbstractTimeoutJob extends AbstractJob implements ITimeout
 
 	abstract public void run();
 	
-	public int compareTo(ITimeoutJob o) {
-		int rez = this.nextRunTime.compareTo(o.getNextRunTime());
-		if(rez == 0) rez = (int) (this.getTaskInfo().getId()-o.getTaskInfo().getId());
+	public int compareTo(ITimeoutJob o2) {
+		int rez = this.getNextRunTime().compareTo(o2.getNextRunTime());
+		if(rez == 0) rez = this.getTaskInfo().getName().compareTo(o2.getTaskInfo().getName());
+		if(rez == 0) rez = this.getTaskInfo().getId()-(o2.getTaskInfo().getId());
+		if(rez == 0) rez = 1;
 		return rez;
 	}
 

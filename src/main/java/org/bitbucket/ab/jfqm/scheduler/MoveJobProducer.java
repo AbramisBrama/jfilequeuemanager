@@ -36,7 +36,9 @@ package org.bitbucket.ab.jfqm.scheduler;
 import java.io.FileNotFoundException;
 import java.sql.Timestamp;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 
+import org.apache.log4j.Logger;
 import org.bitbucket.ab.jfqm.DirChecker;
 import org.bitbucket.ab.jfqm.config.JobConfigSet;
 import org.bitbucket.ab.jfqm.scheduler.impl.MoveJob;
@@ -49,27 +51,34 @@ import org.bitbucket.ab.jfqm.scheduler.impl.MoveJob;
  */
 public class MoveJobProducer implements Runnable {
 
+	static final Logger logger = Logger.getLogger(MoveJobProducer.class);
+	
 	private BlockingQueue<MoveJob> jobQueue;
 	private JobConfigSet checkJobs;
 
+	private ConcurrentSkipListSet<ITimeoutJob> jobSet;
+
 	@Override
 	public void run() {
-		ITimeoutJob first = checkJobs.pollFirst();
+	//	ITimeoutJob first = checkJobs.pollFirst();
 	
-		long currTime = System.currentTimeMillis();			//to avoid frequent reading of System.currentTimeMillis()
-		long delta=currTime - first.getNextRunTime().getTime(); // time before nearest job
+	//	long currTime = System.currentTimeMillis();			//to avoid frequent reading of System.currentTimeMillis()
+	//	long delta=currTime - first.getNextRunTime().getTime(); // time before nearest job
 		
 		while (!Thread.interrupted()) {
-			ITimeoutJob nearestJob = checkJobs.pollFirst();
+			//logger.debug(""+checkJobs.toString());
+			
+			ITimeoutJob nearestJob = (ITimeoutJob) jobSet.first();
 			if (isTimeToRun(nearestJob) ){
+				jobSet.pollFirst();
 				nearestJob.run();
 				nearestJob.refreshNextRunTime();
-				checkJobs.add(nearestJob);
+				jobSet.add(nearestJob);
 			} 
 			else
 			{
 				try {
-					Thread.sleep(System.currentTimeMillis()-nearestJob.getNextRunTime().getTime());
+					Thread.sleep(nearestJob.getNextRunTime().getTime()-System.currentTimeMillis());
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -107,7 +116,8 @@ public class MoveJobProducer implements Runnable {
 		}
 
 	}
-
+	
+	@Deprecated
 	public MoveJobProducer(BlockingQueue<MoveJob> jobQueue,
 			JobConfigSet checkJobs) {
 		super();
@@ -115,6 +125,13 @@ public class MoveJobProducer implements Runnable {
 		this.checkJobs = checkJobs;
 	}
 	
+	public MoveJobProducer(BlockingQueue<MoveJob> b, 
+			ConcurrentSkipListSet jobSet) {
+		super();
+		this.jobQueue = jobQueue;
+		this.jobSet = jobSet;
+	}
+
 	private boolean isTimeToRun(ITimeoutJob job){
 		return (System.currentTimeMillis()- job.getNextRunTime().getTime() ) >=-500;
 	}
