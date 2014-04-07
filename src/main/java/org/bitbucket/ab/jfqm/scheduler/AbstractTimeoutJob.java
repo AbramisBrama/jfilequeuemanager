@@ -32,6 +32,7 @@
 */
 package org.bitbucket.ab.jfqm.scheduler;
 
+import java.io.FileNotFoundException;
 import java.sql.Timestamp;
 
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
@@ -41,6 +42,11 @@ import org.bitbucket.ab.jfqm.task.ITaskInfo;
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
 public abstract class AbstractTimeoutJob extends AbstractJob implements ITimeoutJob {
+
+	@Override
+	public synchronized void refreshNextRunTime() {
+		nextRunTime = new Timestamp(System.currentTimeMillis()+this.getTaskInfo().getTimeout());
+	}
 
 	private Timestamp nextRunTime;
 
@@ -61,6 +67,5 @@ public abstract class AbstractTimeoutJob extends AbstractJob implements ITimeout
 		
 	}
 
-	
 
 }

@@ -33,9 +33,15 @@
 
 package org.bitbucket.ab.jfqm.scheduler.impl;
 
+import java.io.FileNotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.concurrent.BlockingQueue;
 
+
+
+import org.apache.log4j.Logger;
+import org.bitbucket.ab.jfqm.DirChecker;
 import org.bitbucket.ab.jfqm.scheduler.AbstractTimeoutJob;
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
@@ -44,6 +50,10 @@ import org.bitbucket.ab.jfqm.task.ITaskInfo;
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
 public class ResourceCheckJob extends AbstractTimeoutJob {
+
+	static final Logger logger =Logger.getLogger(AbstractTimeoutJob.class);
+	
+	private BlockingQueue<MoveJob> jobQueue;
 
 	public ResourceCheckJob(ITaskInfo currTaskInfo) {
 		super();
@@ -54,7 +64,18 @@ public class ResourceCheckJob extends AbstractTimeoutJob {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+
+		
+		try {
+			if (!DirChecker.isEmpty(getTaskInfo().getFrom())) { // the longest operation TODO put it to new thread
+				jobQueue.put(new MoveJob(getTaskInfo()));
+			} else {
+				System.err.println("Dir empty: "+ getTaskInfo().getFrom()); // TODO Write to log
+			}
+		} catch (FileNotFoundException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

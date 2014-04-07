@@ -61,11 +61,22 @@ public class MoveJobProducer implements Runnable {
 		
 		while (!Thread.interrupted()) {
 			ITimeoutJob nearestJob = checkJobs.pollFirst();
-			if ( isTimeToRun(nearestJob) ){
-				
+			if (isTimeToRun(nearestJob) ){
+				nearestJob.run();
+				nearestJob.refreshNextRunTime();
+				checkJobs.add(nearestJob);
+			} 
+			else
+			{
+				try {
+					Thread.sleep(System.currentTimeMillis()-nearestJob.getNextRunTime().getTime());
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			isTimeToRun(
-			while (delta>=-500) { 							// if less than 500 ms before job beginning
+	/*		isTimeToRun(*/
+	/*		while (delta>=-500) { 							// if less than 500 ms before job beginning
 				try {
 					if (!DirChecker.isEmpty(first.getTaskInfo().getFrom())) { // the longest operation TODO put it to new thread
 						jobQueue.put(new MoveJob(first.getTaskInfo()));
@@ -77,7 +88,7 @@ public class MoveJobProducer implements Runnable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();	// TODO Write to log
 				} finally {
-						first.setNextRunTime(new Timestamp(currTime + first.getTaskInfo().getTimeout()));  //we have already checked first item, so let's refresh its next time to run TODO - bring it to job
+						first.refreshNextRunTime();  //we have already checked first item, so let's refresh its next time to run TODO - bring it to job
 						checkJobs.add(first);	// TODO add after job is done			
 						first = checkJobs.pollFirst();
 						delta = currTime - first.getNextRunTime().getTime();
@@ -92,7 +103,7 @@ public class MoveJobProducer implements Runnable {
 				e.printStackTrace();	 //TODO Write to log
 			}
 			currTime=System.currentTimeMillis();	
-
+*/
 		}
 
 	}

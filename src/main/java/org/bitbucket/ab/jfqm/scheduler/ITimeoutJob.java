@@ -42,4 +42,5 @@ import java.sql.Timestamp;
 public interface ITimeoutJob extends IJob, Comparable<ITimeoutJob> {
 	Timestamp getNextRunTime();
 	void setNextRunTime(Timestamp t);
+	void refreshNextRunTime();
 }
