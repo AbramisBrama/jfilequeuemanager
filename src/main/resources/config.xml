@@ -5,33 +5,14 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-<!--	<bean id="configTaskList" class="org.bitbucket.ab.jfqm.config.ConfigBean">
-		<property name="tasks">
-			<ref bean="taskList" />
-		</property>
-	</bean>
-
-	<bean id="jobsSet" class="org.bitbucket.ab.jfqm.config.JobConfigSet">
-		<constructor-arg index="0">
-			<bean class="org.bitbucket.ab.jfqm.scheduler.impl.TimeoutJobComparator" />
-		</constructor-arg>
-		<constructor-arg index="1">
-			<ref bean="taskList" />
-		</constructor-arg>
-	</bean>
-
-
-	<bean id="taskList" class="java.util.LinkedList">
-		<constructor-arg>
-			<list>
-				<ref bean="test1" />
-				<ref bean="test2" />
-				<ref bean="test3" />
-				<ref bean="test60" />
-			</list>
-		</constructor-arg>
-	</bean>
--->
+	<!-- <bean id="configTaskList" class="org.bitbucket.ab.jfqm.config.ConfigBean"> 
+		<property name="tasks"> <ref bean="taskList" /> </property> </bean> <bean 
+		id="jobsSet" class="org.bitbucket.ab.jfqm.config.JobConfigSet"> <constructor-arg 
+		index="0"> <bean class="org.bitbucket.ab.jfqm.scheduler.impl.TimeoutJobComparator" 
+		/> </constructor-arg> <constructor-arg index="1"> <ref bean="taskList" /> 
+		</constructor-arg> </bean> <bean id="taskList" class="java.util.LinkedList"> 
+		<constructor-arg> <list> <ref bean="test1" /> </list> </constructor-arg> 
+		</bean> -->
 
 	<bean id="jobQueue" class="java.util.concurrent.LinkedBlockingQueue">
 	</bean>
@@ -44,39 +25,56 @@
 			<constructor-arg index="0">
 				<ref bean="test1" />
 			</constructor-arg>
-                        <constructor-arg index="1">
-                                <ref bean="jobQueue" />
-                        </constructor-arg>
+			<constructor-arg index="1">
+				<ref bean="jobQueue" />
+			</constructor-arg>
 
 		</bean>
 		<bean class="org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob">
 			<constructor-arg index="0">
 				<ref bean="test2" />
 			</constructor-arg>
-                        <constructor-arg index="1">
-                                <ref bean="jobQueue" />
-                        </constructor-arg>
+			<constructor-arg index="1">
+				<ref bean="jobQueue" />
+			</constructor-arg>
 
 		</bean>
 		<bean class="org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob">
 			<constructor-arg index="0">
 				<ref bean="test3" />
 			</constructor-arg>
-                        <constructor-arg index="1">
-                                <ref bean="jobQueue" />
-                        </constructor-arg>
+			<constructor-arg index="1">
+				<ref bean="jobQueue" />
+			</constructor-arg>
+
+		</bean>
+		<bean class="org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob">
+			<constructor-arg index="0">
+				<ref bean="test4" />
+			</constructor-arg>
+			<constructor-arg index="1">
+				<ref bean="jobQueue" />
+			</constructor-arg>
+
+		</bean>
+		<bean class="org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob">
+			<constructor-arg index="0">
+				<ref bean="test5" />
+			</constructor-arg>
+			<constructor-arg index="1">
+				<ref bean="jobQueue" />
+			</constructor-arg>
 
 		</bean>
 		<bean class="org.bitbucket.ab.jfqm.scheduler.impl.ResourceCheckJob">
 			<constructor-arg index="0">
 				<ref bean="test60" />
 			</constructor-arg>
-                        <constructor-arg index="1">
-                                <ref bean="jobQueue" />
-                        </constructor-arg>
+			<constructor-arg index="1">
+				<ref bean="jobQueue" />
+			</constructor-arg>
 
 		</bean>
-
 	</util:list>
 
 
@@ -97,6 +95,18 @@
 		<constructor-arg value="/home/saver/test/test3/in/" />
 		<constructor-arg value="/home/saver/test/test3/out/" />
 		<constructor-arg value="8000" />
+	</bean>
+	<bean id="test4" class="org.bitbucket.ab.jfqm.task.TaskInfo">
+		<constructor-arg value="test4" />
+		<constructor-arg value="/home/saver/test/test4/in/" />
+		<constructor-arg value="/home/saver/test/test4/out/" />
+		<constructor-arg value="700" />
+	</bean>
+	<bean id="test5" class="org.bitbucket.ab.jfqm.task.TaskInfo">
+		<constructor-arg value="test5" />
+		<constructor-arg value="/home/saver/test/test5/in/" />
+		<constructor-arg value="/home/saver/test/test5/out/" />
+		<constructor-arg value="800" />
 	</bean>
 	<bean id="test60" class="org.bitbucket.ab.jfqm.task.TaskInfo">
 		<constructor-arg value="test60" />

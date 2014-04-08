@@ -83,6 +83,7 @@ public class ResourceCheckJob extends AbstractTimeoutJob {
 		try {
 			if (!DirChecker.isEmpty(getTaskInfo().getFrom())) { // the longest operation TODO put it to new thread
 				jobQueue.put(new MoveJob(getTaskInfo()));
+				logger.debug("Queue length: "+jobQueue.size());
 			} else {
 				logger.error("Dir empty: "+ getTaskInfo().getFrom()); 
 			}

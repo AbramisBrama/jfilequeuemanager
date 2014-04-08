@@ -43,7 +43,7 @@ import org.bitbucket.ab.jfqm.task.ITaskInfo;
 public class MoveJob extends AbstractJob {
 
 	public MoveJob(ITaskInfo taskInfo) {
-		// TODO Auto-generated constructor stub
+		this.setTaskInfo(taskInfo);
 	}
 
 	/* (non-Javadoc)

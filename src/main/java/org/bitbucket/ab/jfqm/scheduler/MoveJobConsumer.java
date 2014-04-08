@@ -30,42 +30,48 @@
 *   вместе с этой программой. Если это не так, см.
 *   <http://www.gnu.org/licenses/>.)
 */
-package org.bitbucket.ab.jfqm;
+package org.bitbucket.ab.jfqm.scheduler;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.log4j.Logger;
-import org.bitbucket.ab.jfqm.scheduler.ITimeoutJob;
-import org.bitbucket.ab.jfqm.scheduler.MoveJobConsumer;
-import org.bitbucket.ab.jfqm.scheduler.MoveJobProducer;
 import org.bitbucket.ab.jfqm.scheduler.impl.MoveJob;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  */
-public class Main {
-
-	static final Logger logger = Logger.getLogger(Main.class);
+public class MoveJobConsumer implements Runnable {
 	
-	private static ClassPathXmlApplicationContext beanFactory;
+	static final Logger logger = Logger.getLogger(MoveJobConsumer.class);
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		beanFactory = new ClassPathXmlApplicationContext("config.xml");
-		List<ITimeoutJob> bean = (List<ITimeoutJob>) beanFactory.getBean("jobList");
-		ConcurrentSkipListSet<ITimeoutJob> jobsSet = new ConcurrentSkipListSet<ITimeoutJob>(bean);
-		//BlockingQueue<MoveJob> b = new LinkedBlockingQueue<MoveJob>();
-		MoveJobProducer m2 = new MoveJobProducer(jobsSet);
-		BlockingQueue<MoveJob> b = (BlockingQueue<MoveJob>) beanFactory.getBean("jobQueue");
-		MoveJobConsumer c2 = new MoveJobConsumer(b);
-		new Thread(m2).start();
-		new Thread(c2).start();
+	private BlockingQueue<MoveJob> jobSet;
+
+	public MoveJobConsumer(BlockingQueue<MoveJob> b) {
+		this.jobSet = b;
+	}
+
+	@Override
+	public void run() {
+		
+		while (!Thread.interrupted()) {
+			if(!jobSet.isEmpty())
+			{
+				IJob currJob = jobSet.poll();
+				logger.debug(currJob.getTaskInfo().getName()+": moving files from "+currJob.getTaskInfo().getFrom()+" to "+currJob.getTaskInfo().getTo());
+			}
+			else
+			{
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
 
 	}
 
