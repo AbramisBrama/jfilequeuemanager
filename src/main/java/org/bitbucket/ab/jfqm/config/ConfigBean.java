@@ -43,6 +43,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  *
  */
+@Deprecated
 public class ConfigBean implements IConfigBean {
 
 	List<ITaskInfo> tasks;

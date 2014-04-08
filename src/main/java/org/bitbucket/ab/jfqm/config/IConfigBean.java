@@ -41,6 +41,7 @@ import org.bitbucket.ab.jfqm.task.ITaskInfo;
  * @author Victor Letovaltsev <Z_U_B_R_U_S@mail.ru>
  *
  */
+@Deprecated
 public interface IConfigBean  {
 	List<ITaskInfo> getTasks();
 	void setTasks(List<ITaskInfo> tasks);
