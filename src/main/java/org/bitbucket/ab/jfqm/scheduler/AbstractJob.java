@@ -32,9 +32,6 @@
 */
 package org.bitbucket.ab.jfqm.scheduler;
 
-import java.io.FileNotFoundException;
-import java.sql.Timestamp;
-
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 
 /**

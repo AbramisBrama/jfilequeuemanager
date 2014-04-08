@@ -38,8 +38,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 
-
-
 import org.apache.log4j.Logger;
 import org.bitbucket.ab.jfqm.DirChecker;
 import org.bitbucket.ab.jfqm.scheduler.AbstractTimeoutJob;
@@ -54,14 +52,15 @@ public class ResourceCheckJob extends AbstractTimeoutJob {
 	static final Logger logger = Logger.getLogger(AbstractTimeoutJob.class);
 	
 	private BlockingQueue<MoveJob> jobQueue;
-
+	
+/*	@Deprecated
 	public ResourceCheckJob(ITaskInfo currTaskInfo) {
 		super();
 		this.setTaskInfo(currTaskInfo);
 		Date now = new Date();
 		this.setNextRunTime(new Timestamp(now.getTime()+currTaskInfo.getTimeout()));
 	}
-	
+	*/
 	public ResourceCheckJob(ITaskInfo currTaskInfo, BlockingQueue<MoveJob> jobQueue) {
 		super();
 		this.setTaskInfo(currTaskInfo);

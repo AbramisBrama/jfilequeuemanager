@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import org.bitbucket.ab.jfqm.scheduler.ITimeoutJob;
 
-
+@Deprecated
 public class TimeoutJobComparator implements Comparator<ITimeoutJob> {
 
 	public int compare(ITimeoutJob o1, ITimeoutJob o2) {

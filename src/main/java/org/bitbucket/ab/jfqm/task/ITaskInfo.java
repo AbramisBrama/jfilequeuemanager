@@ -32,7 +32,6 @@
 */
 package org.bitbucket.ab.jfqm.task;
 
-import org.bitbucket.ab.jfqm.config.IConfigBean;
 
 /**
  * @author Dmitry Myasnikov <saver_is_not@bk.ru>

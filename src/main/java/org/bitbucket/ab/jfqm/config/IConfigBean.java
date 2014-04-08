@@ -33,7 +33,6 @@
 package org.bitbucket.ab.jfqm.config;
 
 import java.util.List;
-import java.util.Set;
 
 import org.bitbucket.ab.jfqm.task.ITaskInfo;
 

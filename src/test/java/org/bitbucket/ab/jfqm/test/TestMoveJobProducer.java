@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.bitbucket.ab.jfqm.config.JobConfigSet;
 import org.bitbucket.ab.jfqm.scheduler.MoveJobProducer;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,11 +18,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  */
 public class TestMoveJobProducer {
-
+/*
 	private static JobConfigSet jobs;
-	/**
-	 * @throws java.lang.Exception
-	 */
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		ClassPathXmlApplicationContext beanFactory = new ClassPathXmlApplicationContext("config.xml");
@@ -36,5 +33,5 @@ public class TestMoveJobProducer {
 		MoveJobProducer m = new MoveJobProducer(b, jobs );
 		new Thread(m).start();
 	}
-
+*/
 }

@@ -33,15 +33,9 @@
 
 package org.bitbucket.ab.jfqm.scheduler;
 
-import java.io.FileNotFoundException;
-import java.sql.Timestamp;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.log4j.Logger;
-import org.bitbucket.ab.jfqm.DirChecker;
-import org.bitbucket.ab.jfqm.config.JobConfigSet;
-import org.bitbucket.ab.jfqm.scheduler.impl.MoveJob;
 
 
 /**
@@ -52,22 +46,13 @@ import org.bitbucket.ab.jfqm.scheduler.impl.MoveJob;
 public class MoveJobProducer implements Runnable {
 
 	static final Logger logger = Logger.getLogger(MoveJobProducer.class);
-	
-	private BlockingQueue<MoveJob> jobQueue;
-	private JobConfigSet checkJobs;
 
 	private ConcurrentSkipListSet<ITimeoutJob> jobSet;
 
 	@Override
 	public void run() {
-	//	ITimeoutJob first = checkJobs.pollFirst();
-	
-	//	long currTime = System.currentTimeMillis();			//to avoid frequent reading of System.currentTimeMillis()
-	//	long delta=currTime - first.getNextRunTime().getTime(); // time before nearest job
 		
 		while (!Thread.interrupted()) {
-			//logger.debug(""+checkJobs.toString());
-			
 			ITimeoutJob nearestJob = (ITimeoutJob) jobSet.first();
 			if (isTimeToRun(nearestJob) ){
 				jobSet.pollFirst();
@@ -80,55 +65,16 @@ public class MoveJobProducer implements Runnable {
 				try {
 					Thread.sleep(nearestJob.getNextRunTime().getTime()-System.currentTimeMillis());
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("Thread interrupted: "+e.getMessage());
 				}
 			}
-	/*		isTimeToRun(*/
-	/*		while (delta>=-500) { 							// if less than 500 ms before job beginning
-				try {
-					if (!DirChecker.isEmpty(first.getTaskInfo().getFrom())) { // the longest operation TODO put it to new thread
-						jobQueue.put(new MoveJob(first.getTaskInfo()));
-					} else {
-						System.err.println("Dir empty: "+ first.getTaskInfo().getFrom()); // TODO Write to log
-					}
-				} catch (FileNotFoundException e) {
-					System.err.println("File error: "+ e.getMessage()); // TODO Write to log
-				} catch (InterruptedException e) {
-					e.printStackTrace();	// TODO Write to log
-				} finally {
-						first.refreshNextRunTime();  //we have already checked first item, so let's refresh its next time to run TODO - bring it to job
-						checkJobs.add(first);	// TODO add after job is done			
-						first = checkJobs.pollFirst();
-						delta = currTime - first.getNextRunTime().getTime();
-				}
-			}
-			
-			try { //TODO I don't like it
-					Thread.sleep(-delta);
-					delta = System.currentTimeMillis()
-							- first.getNextRunTime().getTime();
-			} catch (InterruptedException e) {
-				e.printStackTrace();	 //TODO Write to log
-			}
-			currTime=System.currentTimeMillis();	
-*/
+
 		}
 
 	}
-	
-	@Deprecated
-	public MoveJobProducer(BlockingQueue<MoveJob> jobQueue,
-			JobConfigSet checkJobs) {
-		super();
-		this.jobQueue = jobQueue;
-		this.checkJobs = checkJobs;
-	}
-	
-	public MoveJobProducer(BlockingQueue<MoveJob> b, 
-			ConcurrentSkipListSet jobSet) {
-		super();
-		this.jobQueue = jobQueue;
+
+
+	public MoveJobProducer(ConcurrentSkipListSet<ITimeoutJob> jobSet) {
 		this.jobSet = jobSet;
 	}
 
